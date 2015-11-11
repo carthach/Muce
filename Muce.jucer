@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="YGBssz" name="Muce" projectType="library" version="1.0.0"
+              bundleIdentifier="com.yourcompany.Muce" includeBinaryInAppConfig="1"
+              jucerVersion="4.0.1">
+  <MAINGROUP id="BPFlNu" name="Muce">
+    <GROUP id="{393BD779-CF03-F1AD-9FFE-29711794B535}" name="Source">
+      <GROUP id="{2D1953E5-9F3E-45AB-AF10-65B1251E0FBA}" name="Muce">
+        <FILE id="qXbHTG" name="Batch.h" compile="0" resource="0" file="Source/Muce/Batch.h"/>
+        <FILE id="bxTP1J" name="Extraction.cpp" compile="1" resource="0" file="Source/Muce/Extraction.cpp"/>
+        <FILE id="UuzAcW" name="Extraction.h" compile="0" resource="0" file="Source/Muce/Extraction.h"/>
+        <FILE id="Rbx52v" name="Information.cpp" compile="1" resource="0" file="Source/Muce/Information.cpp"/>
+        <FILE id="skmlJ3" name="Information.h" compile="0" resource="0" file="Source/Muce/Information.h"/>
+        <FILE id="LQKJBQ" name="Muce.h" compile="0" resource="0" file="Source/Muce/Muce.h"/>
+        <FILE id="f4HAax" name="Tools.cpp" compile="1" resource="0" file="Source/Muce/Tools.cpp"/>
+        <FILE id="jXRAV8" name="Tools.h" compile="0" resource="0" file="Source/Muce/Tools.h"/>
+      </GROUP>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" externalLibraries="essentia&#10;yaml&#10;tag&#10;opencv_core&#10;opencv_ml">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.9 SDK" osxArchitecture="default"
+                       isDebug="1" optimisation="1" targetName="Muce" headerPath="/usr/local/include"
+                       libraryPath="/usr/local/lib"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.9 SDK" osxArchitecture="default"
+                       isDebug="0" optimisation="3" targetName="Muce" headerPath="/usr/local/include"
+                       libraryPath="/usr/local/lib"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../git/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
