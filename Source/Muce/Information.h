@@ -30,12 +30,14 @@ namespace Muce {
         void readYamlToMatrix(const String& yamlFileName, const StringArray& featureList);
         cv::Mat pcaReduce(cv::Mat mat, int noOfDimensions);
         void normaliseFeatures(cv::Mat mat); //in-place
+        void scaleFeatures(cv::Mat mat, std::vector<float> weights);
 
         CvKNearest knn;
         
         cv::Mat kMeans(cv::Mat points, int k);
         cv::Mat knnClassify(cv::Mat instance, int k);
         cv::Mat knnTrain(cv::Mat points, cv::Mat classes);
+        
     };
 }
 

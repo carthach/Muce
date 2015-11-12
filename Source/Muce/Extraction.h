@@ -39,6 +39,7 @@ namespace Muce {
         ~Extraction();
         void initBaseAlgorithms();
         void setupUserAlgorithms(StringArray algorithms);
+        void setupStatistics(StringArray statistics);
         
         int sampleRate = 44100;
         int frameSize = 2048;
@@ -67,10 +68,24 @@ namespace Muce {
         Pool threadFolderPool;
         void run() override;
         
+        float periodOfBeatInSeconds(float BPM, float subDivision)
+        {
+            float periodOfQuaver = 60.0 / BPM; //seconds
+            
+            float period = 0.0;
+            
+            if(subDivision > 4.0)
+                period = periodOfQuaver / (subDivision / 4.0);
+            else if(subDivision >= 1.0)
+                period = periodOfQuaver * (3 - subDivision);
+            
+            return period;
+        }
+        
         //The three possible levels of feature extraction, each returning pools
         Pool extractFeaturesFromFolder(const File& audioFolder, bool writeOnsets);
-        Pool extractFeaturesFromOnsets(vector<vector<Real> >& slices, Real BPM);
-        Pool extractFeatures(const vector<Real>& audio, Real BPM);
+        Pool extractFeaturesFromOnsets(vector<vector<Real> >& slices);
+        Pool extractFeatures(const vector<Real>& audio);
         
         //Music Hack Day functions for writing loops
         void writeLoop(float onsetTime, const vector<Real>& audio, float BPM, String outFileName);
@@ -86,6 +101,7 @@ namespace Muce {
         StringArray availableAlgorithms = {"MFCC", "Centroid", "Flatness", "Bands", "Pitch",
             "RMS", "ZeroCrossingRate", "LogAttackTime", "Envelope", "TcToTotal"};
         std::map<string, bool> selectedAlgorithms;
+        std::vector<string> selectedStatistics;
     private:
         //Spectral
         ScopedPointer<Algorithm> frameCutter, window, spec;

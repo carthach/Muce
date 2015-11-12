@@ -21,6 +21,13 @@ namespace Muce {
         
     }
     
+    void Information::scaleFeatures(cv::Mat mat, std::vector<float> weights)
+    {
+        for(int i=0; i<mat.rows;i++)
+            for(int j=0;j<mat.cols; j++)
+                mat.at<float>(i, j) *= weights[j];
+    }
+    
     
 //    cv::Mat Information::knnTrain(essentia::Pool pool)
 //    {

@@ -51,6 +51,16 @@ namespace Muce {
         yamlOutput  = factory.create("YamlOutput", "format", "yaml");
     }
     
+    void Extraction::setupStatistics(StringArray statistics)
+    {
+        selectedStatistics.clear();
+        for(auto statistic : statistics)
+            selectedStatistics.push_back(statistic.toStdString());
+            
+        AlgorithmFactory& factory = standard::AlgorithmFactory::instance();
+        
+        poolAggregator = factory.create("PoolAggregator", "defaultStats", selectedStatistics);
+    }
     
     void Extraction::setupUserAlgorithms(StringArray algorithmChoices)
     {
@@ -212,7 +222,7 @@ namespace Muce {
         RealMap realMap = pool.getRealPool();
         VectorMap vectorMap = pool.getVectorRealPool();
         
-        for(auto & realFeature : realMap)
+        for(auto & realFeature : realMap) //Spectral Centroid, RMS etc.
         {
             featureVector.push_back(realFeature.second[0]);
         }
@@ -458,7 +468,7 @@ namespace Muce {
                 this->writeOnsets(onsetSlices, outputRoot);
             
             //Add to pool
-            Pool onsetPool = extractFeaturesFromOnsets(onsetSlices, 0);
+            Pool onsetPool = extractFeaturesFromOnsets(onsetSlices);
             //
             threadFolderPool.merge(onsetPool, "append");
             
@@ -514,7 +524,7 @@ namespace Muce {
         return featureList;
     }
     
-    Pool Extraction::extractFeatures(const vector<Real>& audio, Real BPM)
+    Pool Extraction::extractFeatures(const vector<Real>& audio)
     {
         Pool framePool, aggrPool;
         
@@ -565,12 +575,12 @@ namespace Muce {
             
             if(algorithms.count("Flatness")) {
                 algorithms["Flatness"]->compute();
-                framePool.add("flatness", spectralCentroid);
+                framePool.add("flatness", spectralFlatnessReal);
             }
             
             if(algorithms.count("Bands")) {
                 algorithms["Bands"]->compute();
-                framePool.add("bands", spectralCentroid);
+                framePool.add("bands", bandsVector);
             }
             
             if(algorithms.count("Pitch")) {
@@ -656,12 +666,13 @@ namespace Muce {
     
         if(algorithms.count("MFCC")) {
                 //Remove/Add mfcc vector
-                vector<Real> mfccMean = aggrPool.value<vector<Real> >("mfcc.mean");
-                vector<Real> mfccVar = aggrPool.value<vector<Real> >("mfcc.var");
-                aggrPool.remove("mfcc.mean");
-                aggrPool.remove("mfcc.var");
-                aggrPool.add("mfcc.mean", mfccMean);
-                aggrPool.add("mfcc.var", mfccVar);
+            for(auto statistic : selectedStatistics)
+            {
+                string key = "mfcc." + statistic;
+                vector<Real> stat = aggrPool.value<vector<Real> >(key);
+                aggrPool.remove(key);
+                aggrPool.add(key, stat);
+            }
         }
         
         if(algorithms.count("RMS")){
@@ -700,9 +711,7 @@ namespace Muce {
             algorithms["TcToTotal"]->compute();
             aggrPool.add("TCToToal", tCToTotalReal);
         }
-        
-        aggrPool.add("BPM", BPM);
-        
+                
         //If you want to output individual aggregate pools
         //            if(outputAggrPool) {
         //                yamlOutput->reset();
@@ -718,13 +727,13 @@ namespace Muce {
     }
     
     //Put your extractor code here
-    Pool Extraction::extractFeaturesFromOnsets(vector<vector<Real> >& slices, Real BPM)
+    Pool Extraction::extractFeaturesFromOnsets(vector<vector<Real> >& slices)
     {
         Pool onsetPool;
         
         for(auto slice : slices)
         {
-            Pool onsetFeatures = extractFeatures(slice, 0);
+            Pool onsetFeatures = extractFeatures(slice);
             onsetPool.merge(onsetFeatures, "append");
         }
         
