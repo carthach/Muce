@@ -85,6 +85,28 @@ namespace Muce {
         }
     }
     
+    cv::Mat Information::getDistanceMatrix(cv::Mat targetMatrix, cv::Mat datasetMatrix)
+    {
+        cv::Mat distanceMatrix(datasetMatrix.rows, targetMatrix.rows, cv::DataType<float>::type);
+        
+        for(int i=0; i<targetMatrix.rows; i++) { //No of onsets
+            for(int j=0; j<datasetMatrix.rows; j++) { //No of dataset slices
+                
+                float dist = norm(targetMatrix.row(i), datasetMatrix.row(j));
+                
+                distanceMatrix.at<float>(j,i) = dist;
+            }
+        }
+        return distanceMatrix;
+    }
+    
+    cv::Mat Information::getSimilarityMatrix(cv::Mat distanceMatrix)
+    {
+        cv::Mat similarityMatrix;
+        cv::sortIdx(distanceMatrix, similarityMatrix, cv::SORT_EVERY_COLUMN + cv::SORT_ASCENDING);
+        return similarityMatrix;
+    }
+    
     void Information::readYamlToMatrix(const String& yamlFilename, const StringArray& featureList)
     {
         using namespace cv;

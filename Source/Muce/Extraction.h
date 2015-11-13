@@ -70,15 +70,13 @@ namespace Muce {
         
         double getPeriodOfNoteInSamples(double BPM, double sampleRate, double noteLength)
         {
-            double divisor = BPM * sampleRate;
-            
-            double periodOfQuaver = 60.0 / divisor;
+            double periodOfQuaver = (60.0 * sampleRate) / BPM;
             
             if(noteLength > 4)
                 periodOfQuaver = periodOfQuaver / (noteLength / 4);
-            if(noteLength == 2)
+            else if(noteLength == 2)
                 periodOfQuaver *= 2;
-            else
+            else if(noteLength == 1)
                 periodOfQuaver *= 4;
             
             return periodOfQuaver;

@@ -38,6 +38,8 @@ namespace Muce {
         cv::Mat knnClassify(cv::Mat instance, int k);
         cv::Mat knnTrain(cv::Mat points, cv::Mat classes);
         
+        cv::Mat getDistanceMatrix(cv::Mat targetMatrix, cv::Mat datasetMatrix);
+        cv::Mat getSimilarityMatrix(cv::Mat distanceMatrix);        
     };
 }
 
