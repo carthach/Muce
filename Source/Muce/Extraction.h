@@ -68,18 +68,20 @@ namespace Muce {
         Pool threadFolderPool;
         void run() override;
         
-        float periodOfBeatInSeconds(float BPM, float subDivision)
+        double getPeriodOfNoteInSamples(double BPM, double sampleRate, double noteLength)
         {
-            float periodOfQuaver = 60.0 / BPM; //seconds
+            double divisor = BPM * sampleRate;
             
-            float period = 0.0;
+            double periodOfQuaver = 60.0 / divisor;
             
-            if(subDivision > 4.0)
-                period = periodOfQuaver / (subDivision / 4.0);
-            else if(subDivision >= 1.0)
-                period = periodOfQuaver * (3 - subDivision);
+            if(noteLength > 4)
+                periodOfQuaver = periodOfQuaver / (noteLength / 4);
+            if(noteLength == 2)
+                periodOfQuaver *= 2;
+            else
+                periodOfQuaver *= 4;
             
-            return period;
+            return periodOfQuaver;
         }
         
         //The three possible levels of feature extraction, each returning pools
