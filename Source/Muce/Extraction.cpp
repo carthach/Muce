@@ -11,7 +11,7 @@
 #include "Extraction.h"
 
 namespace Muce {        
-    Extraction::Extraction() : ThreadWithProgressWindow ("Building Dataset...", true, true)
+    Extraction::Extraction()
     {
         if(!essentia::isInitialized())
             essentia::init();
@@ -20,6 +20,7 @@ namespace Muce {
     
     Extraction::~Extraction()
     {
+        essentia::shutdown();
     }
     
     void Extraction::initBaseAlgorithms()
@@ -376,135 +377,8 @@ namespace Muce {
         return newVec;
     }
     
-    void Extraction::run()
-    {
-        threadFolderPool.clear();
-        sliceID = 0;
-        
-        Array<File> filesToProcess = Tools::getAudioFiles(threadAudioFolder);
-        
-        String outputRoot = threadAudioFolder.getFullPathName() + "/dataset/";
-        File datasetDirectory(outputRoot);
-        
-        datasetDirectory.createDirectory();
-        
-        File fileNames(outputRoot + "filesProcessed.txt");
-        
-        vector<Real> labels;
-        
-        int count = 0;
-        
-        File filesProcessedFile("/Users/carthach/Desktop/files_juce\n.txt");
-        
-        for(int i=0; i<filesToProcess.size(); i++) {
-            
-            // must check this as often as possible, because this is
-            // how we know if the user's pressed 'cancel'
-            if (threadShouldExit())
-                break;
-            
-            String currentAudioFileName = filesToProcess[i].getFileName();
-            
-            
-            int label;
-            
-            //            if(currentAudioFileName.startsWith("LO_")) {
-            //                label = 0;
-            //                count++;
-            //            }
-            //            else if(currentAudioFileName.startsWith("MID_")) {
-            //                label = 1;
-            //                count++;
-            //            }
-            //            else if(currentAudioFileName.startsWith("HI_")) {
-            //                label = 2;
-            //                count++;
-            //            }
-            //            else {
-            //                continue;
-            //            }
-            
-            std::cout << "Processing file: " << currentAudioFileName << "\n";
-            
-            //            filesProcessedFile.appendText(currentAudioFileName + "\n");
-            
-            labels.push_back(label);
-            
-            //            fileNames.appendText(filesToProcess[i].getFileName() + "\n");
-            vector<Real> signal = tools.audioFileToVector(filesToProcess[i]);
-            //        Real BPM =  getGlobalFeatures(signal)[0];
-            
-            //        std::cout << BPM << "\n";
-            
-            //------Onset Processing
-            
-            //Slice
-            vector<Real> onsetTimes = extractOnsetTimes(signal);
-            vector<vector<Real> > onsetSlices = extractOnsets(onsetTimes, signal);
-            
-            //        vector<vector<Real> > onsetSlices;
-            onsetSlices.push_back(signal);
-            
-            //        std::cout << "noOfOnsets: " << onsetSlices.size() << "\n";
-            
-            //Loopy stuff - MHD
-            //        vector<vector<Real> > loops;
-            //        int noOfLoops = 2;
-            
-            //        for(int j=0; j<noOfLoops; j++) {
-            //            loops.push_back(randomLoop(onsetTimes, signal, BPM, outputRoot + String((i*noOfLoops)+j) + "_" + currentAudioFileName +  "_loop_" + String(j) + ".wav"));
-            //        }
-            
-            //        loops.push_back(firstLoop(onsetTimes, signal, BPM, outputRoot + currentAudioFileName +  "_loop.wav"));
-            
-            //        Pool onsetPool = extractFeatures(loops, BPM);
-            //        globalOnsetPool.merge(onsetPool, "append");
-            
-            //        writeLoop(onsetTimes[5], signal, BPM, outputRoot + "/testy.wav");
-            
-            
-            //Write
-            if(threadWriteOnsets)
-                this->writeOnsets(onsetSlices, outputRoot);
-            
-            //Add to pool
-            Pool onsetPool = extractFeaturesFromOnsets(onsetSlices);
-            //
-            threadFolderPool.merge(onsetPool, "append");
-            
-            setProgress (i / (double) filesToProcess.size());
-        }
-        
-        std::cout << "No. of files processed: " << count << "\n";
-        
-        
-//        threadFolderPool.append("labels", labels);
-        
-        String jsonFilename = outputRoot + "dataset.json";
-        
-
-        //    File jsonFile(jsonFilename);
-        //    String jsonFileText = jsonFile.loadFileAsString();
-        //    jsonFileText = "%YAML:1.0\n" + jsonFileText;
-        //    jsonFile.replaceWithText(jsonFileText);
-        
-        //    cv::Mat erbHi = poolToMat(pool);      
-        
-        //        cv::Mat poolMat = globalPoolToMat();
-        
-        //    cv::Mat pcaOut = pcaReduce(poolMat, 3);
-        
-
-    }
     
-    Pool Extraction::extractFeaturesFromFolder(const File& audioFolder, bool writeOnsets)
-    {
-        threadAudioFolder = audioFolder;
-        threadWriteOnsets = writeOnsets;
-        
-        runThread();
-        return threadFolderPool;
-    }
+
     
     StringArray Extraction::featuresInPool(const Pool& pool)
     {

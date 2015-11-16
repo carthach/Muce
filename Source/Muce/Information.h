@@ -31,6 +31,9 @@ namespace Muce {
         cv::Mat pcaReduce(cv::Mat mat, int noOfDimensions);
         void normaliseFeatures(cv::Mat mat); //in-place
         void scaleFeatures(cv::Mat mat, std::vector<float> weights);
+        
+        std::vector<std::vector<float> > matToVectors(cv::Mat mat);
+        std::vector<float> rowToVector(cv::Mat row);
 
         CvKNearest knn;
         

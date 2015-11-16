@@ -30,7 +30,7 @@ namespace Muce {
     typedef std::map<std::string, std::vector<Real> >::iterator RealMapIter;
     typedef std::map<std::string, std::vector< std::vector<Real> > >::iterator VectorMapIter;
     
-    class Extraction : public ThreadWithProgressWindow {
+    class Extraction  {
     public:
         int sliceID;
         Random random;
@@ -66,21 +66,8 @@ namespace Muce {
         File threadAudioFolder;
         bool threadWriteOnsets;
         Pool threadFolderPool;
-        void run() override;
         
-        double getPeriodOfNoteInSamples(double BPM, double sampleRate, double noteLength)
-        {
-            double periodOfQuaver = (60.0 * sampleRate) / BPM;
-            
-            if(noteLength > 4)
-                periodOfQuaver = periodOfQuaver / (noteLength / 4);
-            else if(noteLength == 2)
-                periodOfQuaver *= 2;
-            else if(noteLength == 1)
-                periodOfQuaver *= 4;
-            
-            return periodOfQuaver;
-        }
+
         
         //The three possible levels of feature extraction, each returning pools
         Pool extractFeaturesFromFolder(const File& audioFolder, bool writeOnsets);

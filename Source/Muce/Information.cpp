@@ -76,6 +76,29 @@ namespace Muce {
         return projection_result;
     }
     
+    std::vector<std::vector<float> > Information::matToVectors(cv::Mat mat)
+    {
+        std::vector<std::vector<float> > vectors;
+        
+        for(int i=0; i<mat.rows; i++) {
+            vectors.push_back(rowToVector(mat.row(i)));
+        }
+        return vectors;
+    }
+    
+    std::vector<float> Information::rowToVector(cv::Mat row)
+    {
+        // Pointer to the i-th row
+//        jassert(row.rows == 0);
+        
+        const float* p = row.ptr<float>(0);
+        
+        // Copy data to a vector.  Note that (p + mat.cols) points to the
+        // end of the row.
+        std::vector<float> vec(p, p + row.cols);
+        return vec;
+    }
+    
     /* Use openCV and PCA to collapse the MFCCs to 2D points for visualisation */
     
     void Information::normaliseFeatures(cv::Mat mat)

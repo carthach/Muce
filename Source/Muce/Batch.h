@@ -14,6 +14,9 @@
 
 using namespace Muce;
 
+//  This is an example of using a Juce Thread with progress window to compute all features
+//  in a batch of files and its subsequent onsets, adapt accordingly
+
 class ThreadBatch : public ThreadWithProgressWindow {
 public:
     Extraction& extraction;
@@ -25,7 +28,7 @@ public:
     
     ThreadBatch(Extraction& extractionIn) : ThreadWithProgressWindow ("Building Dataset...", true, true), extraction(extractionIn), tools(extraction.tools)
     {
-        
+
     }
     
     void run()
@@ -84,14 +87,19 @@ public:
         }
     }
     
+    //This does the extraction
     Pool batchExtract(const File & directory, bool writeOnsets)
     {
         this->directory = directory;
         this->writeOnsets = writeOnsets;
         
         pool.clear();
-        runThread();
         
+        if(runThread())
+            ;
+        else
+            ; //Cancelled
+
         return pool;
     }
     
