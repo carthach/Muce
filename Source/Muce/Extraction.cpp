@@ -431,7 +431,7 @@ namespace Muce {
             }
             
             // if the frame is silent, just drop it and go on processing
-            if (isSilent(frame)) continue;
+//            if (isSilent(frame)) continue;
             
             //Spectrum and MFCC
             window->compute();
