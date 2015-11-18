@@ -28,6 +28,43 @@ namespace Muce {
                 mat.at<float>(i, j) *= weights[j];
     }
     
+    void Information::normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat)
+    {
+        //Merge matrices
+        datasetMat.push_back(targetMat);
+        
+        //Normalise
+        normaliseFeatures(datasetMat);
+        
+        //Delace
+        targetMat = datasetMat.rowRange(datasetMat.rows-targetMat.rows, datasetMat.rows);
+                
+        for(int i=0 ;i<targetMat.rows; i++)
+            datasetMat.pop_back();
+    }
+    
+    void Information::normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat, std::vector<float> weights)
+    {
+        //Merge matrices
+        datasetMat.push_back(targetMat);
+        
+        //Normalise
+        normaliseFeatures(datasetMat);
+        
+        //Delace
+        targetMat = datasetMat.rowRange(datasetMat.rows-datasetMat.rows, datasetMat.rows);
+        
+        for(int i=0 ;i<targetMat.rows; i++)
+            datasetMat.pop_back();
+    }
+    
+//    void Information::normaliseTargetAndDataset(cv::Mat targetMat, cv::Mat datasetMat)
+//    {
+//        datasetMat.push_back(targetMat);
+//        normaliseFeatures(datasetMat);
+//        datasetMat.pop_back()
+//    }
+    
     
 //    cv::Mat Information::knnTrain(essentia::Pool pool)
 //    {
