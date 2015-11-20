@@ -469,7 +469,6 @@ namespace Muce {
         
         //Time to aggregate
         aggrPool.clear();
-        poolAggregator->reset();
         poolAggregator->compute();
         
         //For merging pools together the JSON entries need to be vectorised (using .add function)
