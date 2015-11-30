@@ -49,7 +49,7 @@ namespace Muce {
         string defaultStats[] = {"mean", "var"};
         poolAggregator = factory.create("PoolAggregator", "defaultStats", arrayToVector<string>(defaultStats));
         
-        yamlOutput  = factory.create("YamlOutput", "format", "yaml");
+//        yamlOutput  = factory.create("YamlOutput", "format", "yaml");
     }
     
     void Extraction::setupStatistics(StringArray statistics)
@@ -109,6 +109,11 @@ namespace Muce {
         }
         
         //Global
+        if(selectedAlgorithms["Loudness"]) {
+            algorithms["Loudness"] = factory.create("Loudness");
+            algorithms["Loudness"]->output("loudness").set(loudnessReal);
+        }
+        
         if(selectedAlgorithms["RMS"]) {
             algorithms["RMS"] = factory.create("RMS");
             algorithms["RMS"]->output("rms").set(rmsReal);
@@ -288,17 +293,17 @@ namespace Muce {
     {
         Pool pool;
         
-        //We get the overall pool, merge and output
-        ScopedPointer<Algorithm> yamlInput  = AlgorithmFactory::create("YamlInput", "format", "json");
-        yamlInput->configure("filename", jsonFilename.toStdString());
-        yamlInput->output("pool").set(pool);
-        yamlInput->compute();
-
-//        std::cout << pool.descriptorNames() << "\n";
-        
-//        this->globalOnsetPool = pool;
-        
-        delete yamlInput;
+//        //We get the overall pool, merge and output
+//        ScopedPointer<Algorithm> yamlInput  = AlgorithmFactory::create("YamlInput", "format", "json");
+//        yamlInput->configure("filename", jsonFilename.toStdString());
+//        yamlInput->output("pool").set(pool);
+//        yamlInput->compute();
+//
+////        std::cout << pool.descriptorNames() << "\n";
+//        
+////        this->globalOnsetPool = pool;
+//        
+//        delete yamlInput;
         
         return pool;
     }
@@ -377,9 +382,6 @@ namespace Muce {
         return newVec;
     }
     
-    
-
-    
     StringArray Extraction::featuresInPool(const Pool& pool)
     {
         StringArray featureList;
@@ -410,14 +412,14 @@ namespace Muce {
         window->reset();
         spec->reset();
         
-        for(auto & algorithm : algorithms)
-            algorithm.second->reset();
-        
         poolAggregator->reset();
         poolAggregator->input("input").set(framePool);
         poolAggregator->output("output").set(aggrPool);
         
         framePool.clear();
+        
+        for(auto & algorithm : algorithms)
+            algorithm.second->reset();
         
         //Start the frame cutter
         while (true) {
@@ -548,6 +550,12 @@ namespace Muce {
             }
         }
         
+        if(algorithms.count("Loudness")){
+            algorithms["Loudness"]->input("signal").set(audio);
+            algorithms["Loudness"]->compute();
+            aggrPool.add("loudness", loudnessReal);
+        }
+        
         if(algorithms.count("RMS")){
             algorithms["RMS"]->reset();
             algorithms["RMS"]->input("array").set(audio);
@@ -596,6 +604,7 @@ namespace Muce {
         
         //Finally do the merge to the overall onsetPool
         
+
         return aggrPool;
     }
     

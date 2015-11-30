@@ -86,7 +86,7 @@ namespace Muce {
         std::vector<Real> poolToVector(const Pool& pool);
         
         StringArray availableAlgorithms = {"MFCC", "Centroid", "Flatness", "Bands", "Pitch",
-            "RMS", "ZeroCrossingRate", "LogAttackTime", "Envelope", "TcToTotal"};
+            "Loudness", "RMS", "ZeroCrossingRate", "LogAttackTime", "Envelope", "TcToTotal"};
         std::map<string, bool> selectedAlgorithms;
         std::vector<string> selectedStatistics;
     private:
@@ -94,7 +94,8 @@ namespace Muce {
         ScopedPointer<Algorithm> frameCutter, window, spec;
         std::map<string, ScopedPointer<Algorithm>> algorithms;
         
-        ScopedPointer<Algorithm> yamlOutput, poolAggregator;        
+        ScopedPointer<Algorithm> poolAggregator;
+//        ScopedPointer<Algorithm> yamlOutput;
         
         // FrameCutter -> Windowing -> Spectrum
         std::vector<Real> frame, windowedFrame;
@@ -117,6 +118,7 @@ namespace Muce {
         
         Real spread, skewness, kurtosis;
         
+        Real loudnessReal;
         Real rmsReal;
         Real zeroCrossingRateReal;
         Real logAttackTimeReal;
