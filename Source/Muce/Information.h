@@ -32,8 +32,8 @@ namespace Muce {
         void normaliseFeatures(cv::Mat mat); //in-place
         void scaleFeatures(cv::Mat mat, std::vector<float> weights);
         
-        void normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat, std::vector<float> weights);
-        void normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat);        
+        void normaliseFeaturesWithTarget(cv::Mat & targetMat, cv::Mat &datasetMat, std::vector<float> & weights);
+        void normaliseFeaturesWithTarget(cv::Mat & targetMat, cv::Mat & datasetMat);
         
         std::vector<std::vector<float> > matToVectors(cv::Mat mat);
         std::vector<float> rowToVector(cv::Mat row);

@@ -28,7 +28,7 @@ namespace Muce {
                 mat.at<float>(i, j) *= weights[j];
     }
     
-    void Information::normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat)
+    void Information::normaliseFeaturesWithTarget(cv::Mat & targetMat, cv::Mat & datasetMat)
     {
         //Merge matrices
         datasetMat.push_back(targetMat);
@@ -41,9 +41,10 @@ namespace Muce {
                 
         for(int i=0 ;i<targetMat.rows; i++)
             datasetMat.pop_back();
+        
     }
     
-    void Information::normaliseFeaturesWithTarget(cv::Mat targetMat, cv::Mat datasetMat, std::vector<float> weights)
+    void Information::normaliseFeaturesWithTarget(cv::Mat & targetMat, cv::Mat & datasetMat, std::vector<float> & weights)
     {
         //Merge matrices
         datasetMat.push_back(targetMat);
