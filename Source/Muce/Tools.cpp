@@ -69,7 +69,7 @@ namespace Muce {
     {
         Array<File> audioFiles;
         
-        DirectoryIterator iter (audioFolder, false, "*.mp3;*.wav");
+        DirectoryIterator iter (audioFolder, false, "*.mp3;*.wav;*.aiff");
         
         while (iter.next())
         {

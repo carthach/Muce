@@ -69,6 +69,30 @@ namespace Muce {
         
         //Chop off a string and append some text then add the extension again
         String getAppendedFilename(const File & file, String appendText);
+        
+        
+        Array<File> getAudioFiles(const Array<File> & fileArray)
+        {
+            WildcardFileFilter wildCardFileFilter("*.wav;*.aiff;*.mp3", "", "Audio Files");
+            
+            Array<File> audioFiles;
+            
+            for(auto & file : fileArray)
+                if(wildCardFileFilter.isFileSuitable(file))
+                    audioFiles.add(file);
+            
+            return audioFiles;
+        }
+        
+        Array<File> getAudioFiles(const StringArray & filenameArray)
+        {
+            Array<File> files;
+            
+            for(auto & filename : filenameArray)
+                files.add(File(filename));
+            
+            return getAudioFiles(files);
+        }
     };
 }
 
