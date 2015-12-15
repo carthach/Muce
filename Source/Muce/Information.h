@@ -11,14 +11,16 @@
 #ifndef INFORMATION_H_INCLUDED
 #define INFORMATION_H_INCLUDED
 
-#include "../JuceLibraryCode/JuceHeader.h"
-
 #include "opencv2/opencv.hpp"
+
+#include "Extraction.h"
+
+#include "../JuceLibraryCode/JuceHeader.h"
 
 #include <essentia/algorithmfactory.h>
 #include <essentia/pool.h>
 
-#include "Extraction.h"
+
 
 namespace Muce {
     class Information {

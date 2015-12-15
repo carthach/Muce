@@ -11,9 +11,14 @@
 #ifndef TOOLS_H_INCLUDED
 #define TOOLS_H_INCLUDED
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include "opencv2/opencv.hpp"
+
+#include "../JuceLibraryCode/JuceHeader.h"
+
+
 
 #include <essentia/algorithmfactory.h>
 #include <essentia/pool.h>

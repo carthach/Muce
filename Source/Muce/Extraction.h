@@ -11,13 +11,15 @@
 #ifndef EXTRACTION_H_INCLUDED
 #define EXTRACTION_H_INCLUDED
 
+#include "Tools.h"
+
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include <essentia/algorithmfactory.h>
 #include <essentia/essentiamath.h>
 #include <essentia/pool.h>
 
-#include "Tools.h"
+
 
 namespace Muce {
     using namespace std;
