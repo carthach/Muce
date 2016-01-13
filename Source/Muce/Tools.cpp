@@ -46,17 +46,24 @@ namespace Muce {
         if (buffer.getNumChannels() == 2)
             rightChannelPtr = buffer.getReadPointer(1);
         
-        for(int i=0; i<buffer.getNumSamples(); i++) {
+        for(int i=0; i<buffer.getNumSamples(); i++)
+        {
             essentiaSignal[i] = leftChannelPtr[i];
             if (buffer.getNumChannels() == 2) {
                 essentiaSignal[i] = (leftChannelPtr[i] + rightChannelPtr[i]) / 2.0;
             }
         }
         
+        int thirtySecondsInSamples = 44100 * 30;
+        
+        if(essentiaSignal.size() > thirtySecondsInSamples)
+            essentiaSignal.resize(thirtySecondsInSamples);
+        
         return essentiaSignal;
     }
     
-    std::vector<float> Tools::hannWindow(int size){
+    std::vector<float> Tools::hannWindow(int size)
+    {
         std::vector<float> window;
         for (int i = 0; i < size; i++) {
             double multiplier = 0.5 * (1.0 - cos(2.0*M_PI*(float)i/(float)size));
