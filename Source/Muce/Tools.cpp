@@ -65,10 +65,44 @@ namespace Muce {
     std::vector<float> Tools::hannWindow(int size)
     {
         std::vector<float> window;
-        for (int i = 0; i < size; i++) {
-            double multiplier = 0.5 * (1.0 - cos(2.0*M_PI*(float)i/(float)size));
-            window.push_back(multiplier);
+        
+        if(size)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                double multiplier = 0.5 * (1.0 - cos(2.0*M_PI*(float)i/(float)size));
+                window.push_back(multiplier);
+            }
         }
+        
+        
+        return window;
+    }
+    
+    std::vector<float> Tools::linearRamp(int size, int direction)
+    {
+        std::vector<float> window;
+        
+        if(size)
+        {
+            float incr = 1.0 / size;
+            
+            if(direction)
+            {
+                for(int i=0; i < size; i++)
+                {
+                    window.push_back(incr*i);
+                }
+            }
+            else
+            {
+                for(int i=size; i > 0; i--)
+                {
+                    window.push_back(incr*i);
+                }
+            }
+        }
+        
         return window;
     }
     

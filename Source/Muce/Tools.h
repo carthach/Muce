@@ -62,6 +62,7 @@ namespace Muce {
     
         //Audio handling
         static std::vector<float> hannWindow(int size);
+        static std::vector<float> linearRamp(int size, int direction);
         static Array<File> getAudioFiles(const File& audioFolder);
         static bool vectorToAudioFile(const std::vector<essentia::Real> signal, const String fileName);
         
