@@ -266,13 +266,26 @@ namespace Muce {
         
         delete slicer;
         
+        vector<float> rampUp = Tools::linearRamp(256, 1);
+
+        
         for(int i=0; i<slices.size();i++) {
             std::vector<float> hann = Tools::hannWindow(slices[i].size());
+            
+            int fifth = slices[i].size() * 0.2;
+            vector<float> rampDown = Tools::linearRamp(fifth, 0);
+            
             for(int j=0; j<slices[i].size(); j++) {
-                if(j <= 256)
-                    slices[i][j] = slices[i][j] * hann[j];
-                if(j >= (float)slices[i].size() / 4.0)
-                    slices[i][j] = slices[i][j] * hann[j];
+                if(j < 256)
+                {
+//                    slices[i][j] = slices[i][j] * hann[j];
+                    slices[i][j] = slices[i][j] * rampUp[j];
+                }
+                if(j >= slices[i].size()-fifth)
+                {
+//                    slices[i][j] = slices[i][j] * hann[j];
+                    slices[i][j] = slices[i][j] * rampDown[j-(slices[i].size()-fifth)];
+                }
             }
         }
         
